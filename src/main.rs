@@ -1,13 +1,24 @@
 use clap::{arg, command, ArgGroup, Command};
 
+mod commands;
+mod languages;
+
 fn main() {
     let cli = cli();
 
     let matches = cli.get_matches();
 
     match matches.subcommand() {
-        Some(("daily", _)) => println!("Fetching daily problem"),
-        Some(("problem", _)) => println!("Fetching problem"),
+        Some(("daily", _)) => {
+            commands::daily();
+        }
+        Some(("problem", submatches)) => {
+            println!("Submatches: {:?}", submatches.get_one::<String>("language"));
+            commands::problem();
+        }
+        Some(("random", _)) => {
+            commands::random();
+        }
         _ => unreachable!(),
     }
 }
